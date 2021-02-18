@@ -15,4 +15,3 @@ def exec():
 
   return abort(404)
 
-app.run(port=os.environ.get('PORT', 5000), debug=True)
