@@ -4,7 +4,7 @@ from flask import Flask, request, abort
 app = Flask(__name__)
 
 @app.route('/exec', methods=['POST','GET'])
-def exec():
+def exec_():
   if request.method == 'POST':
     form = request.form
     if "code" in form and "py_v" in form:
