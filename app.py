@@ -10,6 +10,9 @@ def exec_():
     code = repr(repr(base64.b64encode(form["code"].encode("utf-8")).decode()))
     py_v = form["py_v"]
 
-    return s.check_output("python%s -c 'import base64; exec(base64.b64decode({%s.encode()).decode())' 2> /dev/null " % (py_v, code))
+    try:
+      return s.check_output("python%s -c 'import base64; exec(base64.b64decode({%s.encode()).decode())'" % (py_v, code))
+    except:
+      return ""
 
   return abort(404)
