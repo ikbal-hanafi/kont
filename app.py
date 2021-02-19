@@ -11,7 +11,7 @@ def exec_():
     py_v = form["py_v"]
 
     try:
-      return s.check_output(['python%s' % py_v, '-c', "'exec(__import__(%r).b64decode({%r.encode()).decode())'" % ("base64", code), '2>', '/dev/null'])
+      return s.check_output(['python%s' % py_v, '-c', "'exec(__import__(%s).b64decode(%s.encode()).decode())'" % (repr("base64"), repr(code)), '2>', '/dev/null'])
     except Exception, e:
       return str(e)
 
