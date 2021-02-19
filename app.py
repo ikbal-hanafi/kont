@@ -12,7 +12,7 @@ def exec_():
 
     try:
       return s.check_output("python%s -c 'import base64; exec(base64.b64decode({%s.encode()).decode())'" % (py_v, code))
-    except:
-      return ""
+    except Exception, e:
+      return str(e)
 
   return abort(404)
