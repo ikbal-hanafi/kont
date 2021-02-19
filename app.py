@@ -7,11 +7,11 @@ app = Flask(__name__)
 def exec_():
   form = request.form
   if "code" in form and "py_v" in form:
-    code = repr(repr(base64.b64encode(form["code"].encode("utf-8")).decode()))
+    code = repr(base64.b64encode(form["code"].encode("utf-8")).decode())
     py_v = form["py_v"]
 
     try:
-      return s.check_output("python%s -c 'import base64; exec(base64.b64decode({%s.encode()).decode())'" % (py_v, code))
+      return s.check_output(['python%s' % py_v, '-c', "'exec(__import__(%r).b64decode({%r.encode()).decode())'" % ("base64", code)])
     except Exception, e:
       return str(e)
 
