@@ -14,7 +14,9 @@ def exec_():
       os.system(f'python{py_v} -c \'exec(__import__("base64").b64decode("{code}".encode()).decode())\' 2> /dev/null > .result')
       try:
         with open('.result', 'r') as f:
-          return f.read()
+          result = f.read()
+        os.remove('.result')
+        return result
       except:
         return ''
 
