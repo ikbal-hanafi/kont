@@ -1,4 +1,4 @@
-import base64, os, uuid, time
+import base64, os, uuid, time, hashlib
 from flask import Flask, request, abort
 
 app = Flask(__name__)
@@ -9,17 +9,19 @@ def kontol():
   if 'code' in form and 'py_v' in form:
     py_v = form['py_v']
     if py_v in ['3','2']:
-      fname1 = f'.kontol{uuid.uuid4()}{time.time()}'
-      fname2 = f'.memek{uuid.uuid4()}{time.time()}'
+      path = f'.caches-exec/{hashlib.md5(str(uuid.uuid4()).encode()).hexdigest()}'
+      os.makedirs(path, exist_ok=True)
+      fname1 = f'{path}/{uuid.uuid4()}{time.time()}'
+      fname2 = f'{path}/{uuid.uuid4()}{time.time()}'
       with open(fname1, 'w') as f:
         f.write(form['code'])
       os.system(f'python{py_v} {fname1} 2> /dev/null > {fname2}')
       try:
         with open(fname2, 'r') as f:
           result = f.read()
-        os.remove(fname1)
-        os.remove(fname2)
-        return result
+        try: os.removedirs(path)
+        except FileNotFoundError: pass
+        finally: return result
       except Exception as e:
         return str(e)
 
