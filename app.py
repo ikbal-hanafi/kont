@@ -9,7 +9,8 @@ def kontol():
   if 'code' in form and 'py_v' in form:
     py_v = form['py_v']
     if py_v in ['3','2']:
-      path = f'.caches-exec/{hashlib.md5(str(uuid.uuid4()).encode()).hexdigest()}'
+      path_root = '.caches-exec'
+      path = f'./{path_root}/{hashlib.md5(str(uuid.uuid4()).encode()).hexdigest()}'
       os.makedirs(path, exist_ok=True)
       fname1 = f'{path}/{uuid.uuid4()}{time.time()}'
       fname2 = f'{path}/{uuid.uuid4()}{time.time()}'
@@ -19,7 +20,7 @@ def kontol():
       try:
         with open(fname2, 'r') as f:
           result = f.read()
-        try: os.removedirs(path)
+        try: os.removedirs(path_root)
         except FileNotFoundError: pass
         finally: return result
       except Exception as e:
