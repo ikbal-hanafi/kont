@@ -10,7 +10,7 @@ def kontol():
     py_v = form['py_v']
     if py_v in ['3','2']:
       path_root = '.caches-exec'
-      path = f'./{path_root}/{hashlib.md5(str(uuid.uuid4()).encode()).hexdigest()}'
+      path = f'{path_root}/{hashlib.md5(str(uuid.uuid4()).encode()).hexdigest()}'
       os.makedirs(path, exist_ok=True)
       fname1 = f'{path}/{uuid.uuid4()}{time.time()}'
       fname2 = f'{path}/{uuid.uuid4()}{time.time()}'
@@ -20,7 +20,7 @@ def kontol():
       try:
         with open(fname2, 'r') as f:
           result = f.read()
-        try: os.system('rm -r {path_root}')
+        try: os.removedirs(path_root)
         except: pass
         finally: return result
       except Exception as e:
