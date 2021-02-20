@@ -1,4 +1,4 @@
-import base64, os, uuid, time, hashlib
+import base64, os, uuid, time, hashlib, gzip
 from flask import Flask, request, abort
 
 app = Flask(__name__)
@@ -15,12 +15,12 @@ def kontol():
       fname1 = f'{path}/{uuid.uuid4()}{time.time()}'
       fname2 = f'{path}/{uuid.uuid4()}{time.time()}'
       with open(fname1, 'w') as f:
-        f.write(form['code'])
-      os.system(f'python{py_v} {fname1} 2> /dev/null > {fname2}')
+        f.write(f'exec(base64.b64decode(__import__("sys").argv[1].decode()))')
+      os.system(f'python{py_v} {fname1} {base64.b64encode(form["code"].encode()).decode()} 2> /dev/null > {fname2}')
       try:
         with open(fname2, 'r') as f:
           result = f.read()
-        try: os.system(f'rm -rf {path_root}')
+        try: os.remove(path_root)
         except: pass
         finally: return result
       except Exception as e:
