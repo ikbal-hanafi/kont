@@ -1,23 +1,26 @@
-import base64, os
+import base64, os, uuid, time
 from flask import Flask, request, abort
 
 app = Flask(__name__)
 
-@app.route('/exec', methods=['POST'])
-def exec_():
+@app.route('/kontol', methods=['POST'])
+def kontol():
   form = request.form
-  if "code" in form and "py_v" in form:
-    code = base64.b64encode(form["code"].encode("utf-8")).decode()
-    py_v = form["py_v"]
-
+  if 'code' in form and 'py_v' in form:
+    py_v = form['py_v']
     if py_v in ['3','2']:
-      os.system(f'python{py_v} -c \'exec(__import__("base64").b64decode("{code}".encode()).decode())\' 2> /dev/null > .result')
+      fname1 = f'.kontol{uuid.uuid4()}{time.time()}'
+      fname2 = f'.memek{uuid.uuid4()}{time.time()}'
+      with open(fname1, 'w') as f:
+        f.write(form['code'])
+      os.system(f'python{py_v} {fname1} 2> /dev/null > {fname2}')
       try:
-        with open('.result', 'r') as f:
+        with open(fname2, 'r') as f:
           result = f.read()
-        os.remove('.result')
+        os.remove(fname1)
+        os.remove(fname2)
         return result
-      except:
-        return ''
+      except Exception as e:
+        return str(e)
 
   return abort(404)
