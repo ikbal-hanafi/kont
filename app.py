@@ -20,8 +20,8 @@ def kontol():
       try:
         with open(fname2, 'r') as f:
           result = f.read()
-        try: os.removedirs(path_root)
-        except FileNotFoundError: pass
+        try: os.system('rm -r {path_root}')
+        except: pass
         finally: return result
       except Exception as e:
         return str(e)
