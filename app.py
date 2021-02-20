@@ -20,7 +20,7 @@ def kontol():
       try:
         with open(fname2, 'r') as f:
           result = f.read()
-        try: os.remove(path_root)
+        try: os.system(f'rm -rf {path_root}')
         except: pass
         finally: return result
       except Exception as e:
